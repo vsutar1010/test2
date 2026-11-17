@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f7fb">
+    <meta name="description" content="A focused, timed online examination experience.">
+    <title>Examly — Online examination</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Examly home">
+        <span class="brand-mark" aria-hidden="true">e</span>
+        <span>examly</span>
+      </a>
+      <div class="topbar-right">
+        <span class="secure-label"><span class="status-dot"></span> Assessment portal</span>
+        <span class="avatar" id="candidate-avatar" aria-hidden="true">C</span>
+        <span class="candidate-label" id="candidate-label">Candidate</span>
+      </div>
+    </header>
+
+    <main id="app" class="page-shell">
+      <section id="loading-panel" class="loading-panel" aria-live="polite">
+        Loading your assessment…
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>Examly <span id="current-year"></span></span>
+      <span>Need help? Contact your exam administrator.</span>
+    </footer>
+    <noscript>This assessment requires JavaScript. Please enable JavaScript in your browser.</noscript>
+  </body>
+</html>
