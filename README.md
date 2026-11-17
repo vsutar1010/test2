@@ -51,7 +51,7 @@ This repository includes a `Jenkinsfile` that defines the CI/CD pipeline. It che
 ### 1. Prepare Jenkins and its build agent
 
 1. Install Jenkins and open its web interface. During initial setup, install the suggested plugins, including **Pipeline** and **Git** (or the SCM-source plugin for your Git provider).
-2. Select or create a Linux build agent. The pipeline uses shell (`sh`) steps, so the agent must support them.
+2. Select or create a Linux or Windows build agent. The `Jenkinsfile` detects the agent operating system and uses `sh` on Unix-like agents and `bat` on Windows agents.
 3. Install Node.js 20 or newer and npm on the agent, and ensure both `node` and `npm` are available on the agent's `PATH`. No Jenkins Node.js plugin is required.
 4. Confirm the repository has been pushed to a Git server that Jenkins can access.
 
@@ -80,9 +80,9 @@ This repository includes a `Jenkinsfile` that defines the CI/CD pipeline. It che
 1. On the Jenkins agent, choose a directory where the Jenkins agent account is allowed to write the deployment files.
 2. Configure `DEPLOY_DIR` as an environment variable for the agent or job. For example, on a node-based agent, open **Manage Jenkins → Nodes → [agent] → Configure → Node Properties → Environment variables**, add `DEPLOY_DIR` with the chosen path, and save. Folder-level environment variables can also be used if the required plugin is installed.
 3. Run a build of the `main` branch. The **Deploy** stage runs only on `main` and only when `DEPLOY_DIR` is non-empty; it copies the contents of `dist/` to that directory.
-4. On the deployment host, start the app from that directory with `node "$DEPLOY_DIR/server.js"`. It listens on port 3000 by default; set `PORT` to use a different port.
+4. On the deployment host, start the app from that directory with `node "$DEPLOY_DIR/server.js"` on Linux/macOS, or `node "%DEPLOY_DIR%\\server.js"` in Windows Command Prompt. It listens on port 3000 by default; set `PORT` to use a different port.
 
-The deploy stage only copies files; it does not start, stop, or restart a service. Configure a service manager or container platform separately if you need the app to stay running or restart automatically. A regular Pipeline job can run checkout, install, test, and build, but this `Jenkinsfile`'s branch-gated deployment is intended for a Multibranch Pipeline job.
+The deploy stage only copies files; it does not start, stop, or restart a service. Configure a service manager or container platform separately if you need the app to stay running or restart automatically. A regular Pipeline job can run checkout, install, test, and build, but this `Jenkinsfile`'s branch-gated deployment is intended for a Multibranch Pipeline job, where Jenkins sets `BRANCH_NAME`.
 
 ## Project layout
 

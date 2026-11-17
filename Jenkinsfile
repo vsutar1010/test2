@@ -14,19 +14,37 @@ pipeline {
 
         stage('Install') {
             steps {
-                sh 'npm ci'
+                script {
+                    if (isUnix()) {
+                        sh 'npm ci'
+                    } else {
+                        bat 'npm ci'
+                    }
+                }
             }
         }
 
         stage('Test') {
             steps {
-                sh 'npm test'
+                script {
+                    if (isUnix()) {
+                        sh 'npm test'
+                    } else {
+                        bat 'npm test'
+                    }
+                }
             }
         }
 
         stage('Build') {
             steps {
-                sh 'npm run build'
+                script {
+                    if (isUnix()) {
+                        sh 'npm run build'
+                    } else {
+                        bat 'npm run build'
+                    }
+                }
                 archiveArtifacts artifacts: 'dist/**', fingerprint: true
             }
         }
@@ -38,7 +56,13 @@ pipeline {
                 }
             }
             steps {
-                sh 'mkdir -p "$DEPLOY_DIR" && cp -R dist/. "$DEPLOY_DIR/"'
+                script {
+                    if (isUnix()) {
+                        sh 'mkdir -p "$DEPLOY_DIR" && cp -R dist/. "$DEPLOY_DIR/"'
+                    } else {
+                        bat 'if not exist "%DEPLOY_DIR%" mkdir "%DEPLOY_DIR%"\r\nxcopy /E /I /Y "dist\\*" "%DEPLOY_DIR%"'
+                    }
+                }
             }
         }
     }
